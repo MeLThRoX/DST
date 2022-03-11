@@ -15,12 +15,12 @@ contract DST
     struct Product 
     {
         uint256 ID;
+        string category;
         string name;
         uint256 pricePerUnit;
         string description;
         string pictureHash;
-        uint256 soldUnits;
-        string category;
+        uint256 soldUnits;  
     }
 
     Product[] private products;
@@ -34,6 +34,7 @@ contract DST
         currentID = 0;
         usedToken = ERC20(_token);
     }
+
 
     function addInventory(uint256 _id, uint256 _amount)
     public
@@ -68,17 +69,17 @@ contract DST
         string calldata _description, 
         string calldata _pictureHash)
     public
-    returns(bool)
+    returns(uint256)
     {
         require(msg.sender == admin, "Only admin allowed to execute!");
-        Product memory neues = Product(currentID, _name, _price, _description,  _pictureHash, 0, _category);
+        Product memory neues = Product(currentID, _category,  _name, _price, _description,  _pictureHash, 0);
         products.push(neues);
 
         inventory[currentID] = _amount;
         
         currentID += 1;
 
-        return true;
+        return currentID - 1;
     }
 
     
@@ -86,12 +87,20 @@ contract DST
     public
     returns(bool)
     {
+        // check if all requirements for transfer are met
         require(inventory[_id] > _amount, "Not enought products in store!");
         uint256 totalPrice = getProductPrice(_id) * _amount;
         require(usedToken.allowance(msg.sender, address(this)) >= totalPrice, "Allowance is too low!");
         
+        // transfer total price from customer to contract
         usedToken.transferFrom(msg.sender, address(this), _amount);
         inventory[_id] = inventory[_id] - _amount;
+
+        // set new product info within contract
+        Product memory current = products[_id];
+        current.soldUnits += _amount;
+        products[_id] = current;
+
         return true;
     }
 
@@ -140,3 +149,44 @@ contract DST
         usedToken.transfer(_receiver, _amount);
     }
 }
+
+/*
+contract Category{
+
+    struct Product 
+    {
+        uint256 ID;
+        string name;
+        uint256 pricePerUnit;
+        string description;
+        string pictureHash;
+        uint256 soldUnits;
+        string category;
+    }
+
+    Product[] products;
+
+    function addItem() 
+    {
+
+    }
+
+    function removeItem()
+    {
+
+    }
+
+    function getItem(uint256 _id)
+    {
+
+    }
+
+    function getAllItems()
+    {
+
+    }
+
+
+
+}
+*/
