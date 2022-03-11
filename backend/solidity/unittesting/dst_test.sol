@@ -13,23 +13,11 @@ import "./shop.sol";
 
 // File name has to end with '_test.sol', this file can contain more than one testSuite contracts
 contract ShopTesting {
+    // instance of shop
     DST dst;
 
-    /*
-    struct Product 
-    {
-        uint256 ID;
-        string category;
-        string name;
-        uint256 pricePerUnit;
-        string description;
-        string pictureHash;
-        uint256 soldUnits;  
-    }
-    */
-
     function beforeAll() public {
-        // new shop that uses weth on rinkeby
+        // new shop that uses weth on rinkeby, not relevant for testing
         dst = new DST(msg.sender, 0xc778417E063141139Fce010982780140Aa0cD5Ab);
     }
 
@@ -65,34 +53,15 @@ contract ShopTesting {
 
     function addingToInventory() public
     {
-
+        dst.addInventory(0, 20);
+        Assert.equal(dst.getInventoryAtID(0), 40, "Inventory not updated correctly");
     }
 
-/*
-    function checkSuccess() public {
-        // Use 'Assert' methods: https://remix-ide.readthedocs.io/en/latest/assert_library.html
-        Assert.ok(2 == 2, 'should be true');
-        Assert.greaterThan(uint(2), uint(1), "2 should be greater than to 1");
-        Assert.lesserThan(uint(2), uint(3), "2 should be lesser than to 3");
+
+    function removingFromInventory() public
+    {
+        dst.reduceInventory(0, 30);
+        Assert.equal(dst.getInventoryAtID(0), 10, "Inventory not updated correctly");
     }
 
-    function checkSuccess2() public pure returns (bool) {
-        // Use the return value (true or false) to test the contract
-        return true;
-    }
-    
-    function checkFailure() public {
-        Assert.notEqual(uint(1), uint(1), "1 should not be equal to 1");
-    }
-
-    /// Custom Transaction Context: https://remix-ide.readthedocs.io/en/latest/unittesting.html#customization
-    /// #sender: account-1
-    /// #value: 100
-    function checkSenderAndValue() public payable {
-        // account index varies 0-9, value is in wei
-        Assert.equal(msg.sender, TestsAccounts.getAccount(1), "Invalid sender");
-        Assert.equal(msg.value, 100, "Invalid value");
-    }
-    */
 }
-    
