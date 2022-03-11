@@ -36,6 +36,9 @@ contract DST
     }
 
 
+/*
+----- Management functions
+*/
     function addInventory(uint256 _id, uint256 _amount)
     public
     {
@@ -60,6 +63,16 @@ contract DST
         admin = _newAdmin;
     }
 
+    // Price in wei
+    function changePrice(uint256 _id, uint256 _newPrice)
+    public
+    {
+        require(msg.sender == admin, "Only admin allowed to execute!");
+        Product memory current = getProductAtID(_id);
+        current.pricePerUnit = _newPrice;
+        products[_id] = current;
+    }
+
 
     function createNewItemInInventoy(
         string calldata _category,
@@ -82,7 +95,10 @@ contract DST
         return currentID - 1;
     }
 
-    
+
+/*
+----- Money related
+*/
     function buy(uint256 _id, uint256 _amount) 
     public
     returns(bool)
@@ -97,11 +113,31 @@ contract DST
         inventory[_id] = inventory[_id] - _amount;
 
         // set new product info within contract
-        Product memory current = products[_id];
+        Product memory current = getProductAtID(_id);
         current.soldUnits += _amount;
         products[_id] = current;
 
         return true;
+    }
+
+
+    function withdraw(address _receiver, uint256 _amount) 
+    public
+    {
+        require(msg.sender == admin, "Only admin allowed to execute!");
+        require(usedToken.balanceOf(address(this)) >= _amount, "Not enought token in contract");
+        usedToken.transfer(_receiver, _amount);
+    }
+
+/*
+----- Getter functions
+*/
+    function getSoldUnits(uint256 _id)
+    public
+    view
+    returns(uint256)
+    {
+        return getProductAtID(_id).soldUnits;
     }
 
 
@@ -119,15 +155,17 @@ contract DST
     view 
     returns(uint256)
     {
+        // no need to check if _id exists in inventory. key-value pairs give automatic feedback
         return inventory[_id];
     }
 
 
-    function getProductFromID(uint256 _id) 
+    function getProductAtID(uint256 _id) 
     public 
     view 
     returns(Product memory)
     {
+        require(products.length > _id, "Product does not exist");
         return products[_id];
     }
 
@@ -137,56 +175,6 @@ contract DST
     view 
     returns(uint256)
     {
-        return products[_id].pricePerUnit;
-    }
-
-
-    function withdraw(address _receiver, uint256 _amount) 
-    public
-    {
-        require(msg.sender == admin, "Only admin allowed to execute!");
-        require(usedToken.balanceOf(address(this)) >= _amount, "Not enought token in contract");
-        usedToken.transfer(_receiver, _amount);
+        return getProductAtID(_id).pricePerUnit;
     }
 }
-
-/*
-contract Category{
-
-    struct Product 
-    {
-        uint256 ID;
-        string name;
-        uint256 pricePerUnit;
-        string description;
-        string pictureHash;
-        uint256 soldUnits;
-        string category;
-    }
-
-    Product[] products;
-
-    function addItem() 
-    {
-
-    }
-
-    function removeItem()
-    {
-
-    }
-
-    function getItem(uint256 _id)
-    {
-
-    }
-
-    function getAllItems()
-    {
-
-    }
-
-
-
-}
-*/
