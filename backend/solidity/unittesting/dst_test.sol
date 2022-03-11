@@ -12,15 +12,63 @@ import "remix_accounts.sol";
 import "./shop.sol";
 
 // File name has to end with '_test.sol', this file can contain more than one testSuite contracts
-contract testSuite {
+contract ShopTesting {
+    DST dst;
 
-    /// 'beforeAll' runs before all other tests
-    /// More special functions are: 'beforeEach', 'beforeAll', 'afterEach' & 'afterAll'
+    /*
+    struct Product 
+    {
+        uint256 ID;
+        string category;
+        string name;
+        uint256 pricePerUnit;
+        string description;
+        string pictureHash;
+        uint256 soldUnits;  
+    }
+    */
+
     function beforeAll() public {
-        // <instantiate contract>
-        Assert.equal(uint(1), uint(1), "1 should be equal to 1");
+        // new shop that uses weth on rinkeby
+        dst = new DST(msg.sender, 0xc778417E063141139Fce010982780140Aa0cD5Ab);
     }
 
+    
+    function initialSetupIsCorrect() public
+    {
+        Assert.ok(dst.getProducts().length == 0, "Products is not empty");
+        Assert.equal(msg.sender, dst.admin(), "Admin is not set correctly");
+    }
+    
+
+    function addingAnItemWorks() public
+    {
+        uint256 id = dst.setNewItemInShop("TestCategory", "Testname", 100, 30, "Das ist ein Testitem", "TestHash");
+        DST.Product memory setItem = dst.getProductAtID(id);
+        DST.Product memory comparison = DST.Product(id, "TestCategory", "Testname", 100, "Das ist ein Testitem", "TestHash", 0); 
+        Assert.equal(setItem.ID, comparison.ID, "Product-IDs are not the same");
+        Assert.equal(setItem.name, comparison.name, "Product-names are not the same");
+        Assert.equal(setItem.description, comparison.description, "Products-descriptions are not the same");
+        // no need to test all attributes of the two structs
+    }
+
+
+    function productAttributesAfterBuying() public
+    {
+        // buy product, that was set in addingAnItemWorks function 
+        dst.buy(0, 10);
+        DST.Product memory current = dst.getProductAtID(0);
+        Assert.equal(current.soldUnits, 10, "Bought units not registered correctly");
+        Assert.equal(dst.getInventoryAtID(0), 20, "Inventory not updated correctly");
+    }
+
+
+    function addingToInventory() public
+    {
+
+    }
+
+/*
     function checkSuccess() public {
         // Use 'Assert' methods: https://remix-ide.readthedocs.io/en/latest/assert_library.html
         Assert.ok(2 == 2, 'should be true');
@@ -45,5 +93,6 @@ contract testSuite {
         Assert.equal(msg.sender, TestsAccounts.getAccount(1), "Invalid sender");
         Assert.equal(msg.value, 100, "Invalid value");
     }
+    */
 }
     
