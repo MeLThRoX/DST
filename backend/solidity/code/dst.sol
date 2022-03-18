@@ -6,8 +6,8 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract DST
 {
 
-    address private constant stable = 0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa; //dai
-    address private constant volat = 0xc778417E063141139Fce010982780140Aa0cD5Ab; //weth
+    //address private constant stable = 0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa; //dai
+    //address private constant volat = 0xc778417E063141139Fce010982780140Aa0cD5Ab; //weth
 
     address private admin;
     uint256 private currentID;
@@ -23,6 +23,32 @@ contract DST
         uint256 soldUnits;  
     }
 
+    struct inputProduct 
+    {
+        string category;
+        string name;
+        uint256 pricePerUnit;
+        uint256 amount;  
+        string description;
+        string pictureHash;
+    }
+
+    struct Cart
+    {
+        uint256 productID;
+        uint256 amount;
+    }
+
+    struct Order
+    {
+        Cart[] cart;
+        uint256 totalValueOfOrder;
+        string encInfo;
+    }
+
+    
+    uint256[] private Test;
+    Order[] private orderList;
     Product[] private products;
     mapping(uint256 => uint256) private inventory;
 
@@ -42,7 +68,7 @@ contract DST
     function addInventory(uint256 _id, uint256 _amount)
     public
     {
-        require(msg.sender == admin, "Only admin allowed to execute!");
+        require(isAdmin(), "Only admin allowed to execute!");
         inventory[_id] += _amount;
     }
 
@@ -50,7 +76,7 @@ contract DST
     function reduceInventory(uint256 _id, uint256 _amount) 
     public
     {
-        require(msg.sender == admin, "Only admin allowed to execute!");
+        require(isAdmin(), "Only admin allowed to execute!");
         require(inventory[_id] >= _amount, "Cant reduce more than currently available!");
         inventory[_id] -= _amount;
     }
@@ -59,7 +85,7 @@ contract DST
     function changeAdmin(address _newAdmin) 
     public
     {
-        require(msg.sender == admin, "Only admin allowed to execute!");
+        require(isAdmin(), "Only admin allowed to execute!");
         admin = _newAdmin;
     }
 
@@ -67,40 +93,74 @@ contract DST
     function changePrice(uint256 _id, uint256 _newPrice)
     public
     {
-        require(msg.sender == admin, "Only admin allowed to execute!");
+        require(isAdmin(), "Only admin allowed to execute!");
         Product memory current = getProductAtID(_id);
         current.pricePerUnit = _newPrice;
         products[_id] = current;
     }
 
 
-    function createNewItemInInventoy(
-        string calldata _category,
-        string calldata _name,  
-        uint256 _price, 
-        uint256 _amount, 
-        string calldata _description, 
-        string calldata _pictureHash)
-    public
-    returns(uint256)
+    function createItems( inputProduct[] calldata input) public 
     {
-        require(msg.sender == admin, "Only admin allowed to execute!");
-        Product memory neues = Product(currentID, _category,  _name, _price, _description,  _pictureHash, 0);
-        products.push(neues);
+        require(isAdmin(), "Only admin allowed to execute!");
 
-        inventory[currentID] = _amount;
-        
-        currentID += 1;
-
-        return currentID - 1;
+        for (uint i=0; i<input.length; i++) {
+            Product memory neues = Product(currentID,
+                input[i].category,  
+                input[i].name, 
+                input[i].pricePerUnit, 
+                input[i].description,  
+                input[i].pictureHash, 
+                0);
+            products.push(neues);
+            inventory[currentID] = input[i].amount;
+            currentID += 1;
+        }
     }
 
 
 /*
------ Money related
+----- Order-Related
 */
-    function buy(uint256 _id, uint256 _amount) 
+
+    function buyCart(Cart[] calldata input, string calldata encInfo)
     public
+    {
+        // not sure, if this is the best way
+        bool readyToTransfer = true;
+        uint256 totalPrice = 0;
+
+        for (uint i=0; i<input.length; i++)
+        {
+            totalPrice += (getProductPrice(input[i].productID) * input[i].amount);
+            if (inventory[input[i].productID] < input[i].amount)
+            {
+                readyToTransfer = false;
+            }
+        }
+
+        require(usedToken.allowance(msg.sender, address(this)) >= totalPrice, "Allowance is too low!");
+        if (readyToTransfer) 
+        {
+            for (uint i=0; i<input.length; i++)
+            {
+               buy(input[i].productID, input[i].amount);
+            }
+        }
+
+        /*
+        Instead of: orderList.push(Order(input,totalPrice,encInfo));
+        We use the following:
+        */
+        Order memory newOrder = orderList.push();
+        newOrder.cart = input;
+        newOrder.totalValueOfOrder = totalPrice;
+        newOrder.encInfo = encInfo;
+    
+    }
+
+    function buy(uint256 _id, uint256 _amount) 
+    private
     returns(bool)
     {
         // check if all requirements for transfer are met
@@ -124,14 +184,37 @@ contract DST
     function withdraw(address _receiver, uint256 _amount) 
     public
     {
-        require(msg.sender == admin, "Only admin allowed to execute!");
+        require(isAdmin() , "Only admin allowed to execute!");
         require(usedToken.balanceOf(address(this)) >= _amount, "Not enought token in contract");
         usedToken.transfer(_receiver, _amount);
     }
 
+
+    function getAllOrders()
+    public
+    view
+    returns(Order[] memory)
+    {
+        require(isAdmin() , "Only admin allowed to execute!");
+        return orderList;
+    }
+
+    /* TODO
+    getSomeOfTheOrder - only get split of ordered items, maybe last 24 hours, or orders, that have not been checked for
+    */
+
 /*
 ----- Getter functions
 */
+
+    function isAdmin()
+    public
+    view
+    returns(bool)
+    {
+        return (msg.sender == admin);
+    }
+
     function getSoldUnits(uint256 _id)
     public
     view
@@ -140,6 +223,13 @@ contract DST
         return getProductAtID(_id).soldUnits;
     }
 
+    function getTokenName()
+    public
+    pure
+    returns(string memory)
+    {
+        return "WETH";
+    }
 
     function getProducts() 
     public 
@@ -148,7 +238,6 @@ contract DST
     {
         return products;
     }
-
 
     function getInventoryAtID(uint256 _id) 
     public 
