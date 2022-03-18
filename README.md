@@ -1,4 +1,4 @@
-# DST Decentralized Shop Toolkit
+# DST - Decentralized Shop Toolkit
 hier eine kurze Beschreibung
 Wer hat dran mitgewirkt
 
