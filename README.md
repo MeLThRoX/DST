@@ -1,5 +1,5 @@
-# DST
-Decentralized Shop Toolkit - hier eine kurze Beschreibung
+# DST Decentralized Shop Toolkit
+hier eine kurze Beschreibung
 Wer hat dran mitgewirkt
 
 ## Simple porgramm-overview
