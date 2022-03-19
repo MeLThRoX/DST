@@ -25,10 +25,15 @@
     "prettier-plugin-svelte": "^2.4.0",
     "svelte": "^3.44.0",
     "svelte-check": "^2.2.6",
+    "svelte-ethers-store": "^2.1.0",
     "svelte-preprocess": "^4.9.4",
     "tailwindcss": "^3.0.22",
     "tslib": "^2.3.1",
     "typescript": "^4.4.3"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "ethers": "^5.6.1",
+    "svelte-web3": "^3.3.6"
+  }
 }
