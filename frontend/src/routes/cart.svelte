@@ -15,11 +15,17 @@
     let buy = async () => {
         buyLoading = true
         let products = await $contracts.shop.getProducts()
-        let price = Object.keys($cart).map(id => products.find(p => p.ID == id)).map(p => Number(p.pricePerUnit)).reduce((p1,p2) => p1+p2, 0)
-        
+        let cartProducts = Object.keys($cart).map(id => products.find(p => p.ID == id))
+
+        let price = 0
+        cartProducts.forEach(p => {
+            price += Number(p.pricePerUnit) * $cart[p.ID]
+        });
+
         await (await $contracts.erc20.approve(contract_address, price)).wait()
         let input = Object.keys($cart).map(id => [Number(id), $cart[id]])
-        await $contracts.shop.buyCart(input, "Test")
+
+        await $contracts.shop.buyCart(input, JSON.stringify($cart), "Test")
         buyLoading = false
         cart.reset()
     }

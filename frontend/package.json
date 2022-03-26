@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.0.1",
   "scripts": {
+    "ipfs": "node ipfs.cjs",
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
     "package": "svelte-kit package",
@@ -20,6 +21,7 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-svelte3": "^3.2.1",
+    "ipfs-core": "^0.14.1",
     "postcss": "^8.4.6",
     "prettier": "^2.4.1",
     "prettier-plugin-svelte": "^2.4.0",
@@ -34,6 +36,7 @@
   "type": "module",
   "dependencies": {
     "ethers": "^5.6.1",
+    "ipfs-http-client": "^56.0.1",
     "svelte-web3": "^3.3.6"
   }
 }

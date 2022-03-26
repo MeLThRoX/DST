@@ -38,6 +38,11 @@
 			},
 			{
 				"internalType": "string",
+				"name": "str_input",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
 				"name": "encInfo",
 				"type": "string"
 			}
@@ -145,17 +150,6 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_token",
-				"type": "address"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
 				"name": "_receiver",
 				"type": "address"
 			},
@@ -172,26 +166,19 @@
 	},
 	{
 		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
 		"name": "getAllOrders",
 		"outputs": [
 			{
 				"components": [
 					{
-						"components": [
-							{
-								"internalType": "uint256",
-								"name": "productID",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "amount",
-								"type": "uint256"
-							}
-						],
-						"internalType": "struct DST.Cart[]",
+						"internalType": "string",
 						"name": "cart",
-						"type": "tuple[]"
+						"type": "string"
 					},
 					{
 						"internalType": "uint256",
@@ -207,6 +194,19 @@
 				"internalType": "struct DST.Order[]",
 				"name": "",
 				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getBalance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",

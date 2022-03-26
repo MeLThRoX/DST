@@ -16,6 +16,7 @@
 	const connect = async () => {
 		pending = true
 		try {
+			await ethereum.request({ method: 'eth_requestAccounts'})
 			await defaultEvmStores.setProvider(new ethers.providers.Web3Provider(ethereum))
 			
 			pending = false
