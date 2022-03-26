@@ -41,9 +41,10 @@ contract DST
 
     struct Order
     {
-        Cart[] cart;
+        string cart;
         uint256 totalValueOfOrder;
         string encInfo;
+        //uint time;
     }
 
     
@@ -54,11 +55,12 @@ contract DST
 
     ERC20 usedToken;
 
-    constructor(address _token)
+    constructor()
     {
         admin = msg.sender;
         currentID = 0;
-        usedToken = ERC20(_token);
+        usedToken = ERC20(0xc778417E063141139Fce010982780140Aa0cD5Ab);
+        //usedToken = ERC20(_token);
     }
 
 
@@ -123,7 +125,7 @@ contract DST
 ----- Order-Related
 */
 
-    function buyCart(Cart[] calldata input, string calldata encInfo)
+    function buyCart(Cart[] calldata input, string memory str_input, string calldata encInfo)
     public
     {
         // not sure, if this is the best way
@@ -144,20 +146,27 @@ contract DST
         {
             for (uint i=0; i<input.length; i++)
             {
-               buy(input[i].productID, input[i].amount);
+                //update-product info in inventory
+                Product memory current = getProductAtID(input[i].productID);
+                current.soldUnits += input[i].amount;
+                products[input[i].productID] = current;
+               
+                inventory[input[i].productID] = inventory[input[i].productID] - input[i].amount;
             }
-        }
 
-        /*
-        Instead of: orderList.push(Order(input,totalPrice,encInfo));
-        We use the following:
-        */
-        Order memory newOrder = orderList.push();
-        newOrder.cart = input;
-        newOrder.totalValueOfOrder = totalPrice;
-        newOrder.encInfo = encInfo;
-    
+            //transfer token
+            usedToken.transferFrom(msg.sender, address(this), totalPrice); 
+            
+            /*
+            Instead of: orderList.push(Order(input,totalPrice,encInfo));
+            We use the following:
+            */
+            orderList.push(Order(str_input, totalPrice, encInfo));
+            //orderList.push(Order(str_input, totalPrice, encInfo, block.timestamp));
+        }
     }
+    
+    /*
 
     function buy(uint256 _id, uint256 _amount) 
     private
@@ -179,8 +188,8 @@ contract DST
 
         return true;
     }
-
-
+    */
+    
     function withdraw(address _receiver, uint256 _amount) 
     public
     {
@@ -266,4 +275,15 @@ contract DST
     {
         return getProductAtID(_id).pricePerUnit;
     }
+
+
+    function getBalance()
+    public
+    view
+    returns(uint256)
+    {
+        return usedToken.balanceOf(address(this));
+    }
+
+
 }
