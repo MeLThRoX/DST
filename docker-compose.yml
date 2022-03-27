@@ -8,7 +8,9 @@ services:
         - PRIVATE_KEY=0x0f0fa2f9f204fb3ccb542106694bc74f818259e03c231b5afd5f9fc4b9831b05
     container_name: dst
     restart: always
-    network_mode: "host"
+    ports:
+      - 4002:4002
+      - 4003:4003
     volumes:
       - build:/app/build
 
