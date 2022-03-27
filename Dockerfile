@@ -22,6 +22,7 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY /frontend /app
 COPY --from=contract /app/config.json /app/src/
+COPY --from=solidity /code/build/dst_sol_DST.abi /app/src/ABI.json
 RUN npm install
 RUN npm run build
 EXPOSE 4002
