@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  dst:
+    build:
+      context: .
+      args:
+        - PRIVATE_KEY=<PRIVATE_KEY>
+    container_name: dst
+    restart: always
+    network_mode: "host"
