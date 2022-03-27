@@ -5,7 +5,22 @@ services:
     build:
       context: .
       args:
-        - PRIVATE_KEY=<PRIVATE_KEY>
+        - PRIVATE_KEY=0x0f0fa2f9f204fb3ccb542106694bc74f818259e03c231b5afd5f9fc4b9831b05
     container_name: dst
     restart: always
     network_mode: "host"
+    volumes:
+      - build:/app/build
+
+  nginx:
+    build: ./nginx
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - build:/usr/share/nginx/html
+    depends_on:
+      - dst
+
+volumes:
+  build:

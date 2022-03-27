@@ -24,4 +24,6 @@ COPY /frontend /app
 COPY --from=contract /app/config.json /app/src/
 RUN npm install
 RUN npm run build
+EXPOSE 4002
+EXPOSE 4003
 CMD [ "npm", "run", "ipfs" ]
