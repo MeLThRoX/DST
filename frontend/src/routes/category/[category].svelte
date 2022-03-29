@@ -35,7 +35,7 @@
                             />
                         </div>
                         <div class="flex mt-2 justify-between">
-                            <h3 class="text-lg font-bold text-white">Earthen Bottle</h3>
+                            <h3 class="text-lg font-bold text-white">${product.name}</h3>
                             <p class="text-lg font-medium text-green-300">${product.pricePerUnit}</p>
                         </div>
                         <div>

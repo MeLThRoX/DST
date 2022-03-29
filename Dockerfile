@@ -7,9 +7,11 @@ RUN solcjs --bin --abi --include-path node_modules --base-path . -o build dst.so
 
 FROM node:alpine as contract
 ARG PRIVATE_KEY
+ARG PROVIDER
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 ENV PRIVATE_KEY=$PRIVATE_KEY
+ENV PROVIDER=$PROVIDER
 COPY backend/deployer/* ./
 COPY config.json ./
 COPY --from=solidity /code/build/dst_sol_DST.abi /contract/abi.json
