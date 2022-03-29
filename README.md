@@ -50,6 +50,16 @@ Folgende Schritte müssen eingeleitet werden um den Shop zu installieren und aus
    $ docker-compose up -d
    ```
 
+## Nutzung
+### IPFS
+Nach der erfolgreichen Installation ist der Shop bereit genutzt zu werden. Um den IPFS-Link zu bekommen muss folgender Befehl benutzt werden:
+```bash
+$ docker-compose logs -f
+```
+
+### NGINX
+Dem Admin wird noch ein Fallback-NGINX-Webserver bereitgestellt, um einfacher und schneller auf den Server zuzugreifen.
+Dieser ist über die Adresse [`http://localhost:8080/`](http://localhost:8080/) erreichbar.
 
 ## Programm-Overview
 In folgender Darstellung ist das Verhältnis des Repos zu den Docker-Containern und dem deployted Code zu erkennen:
@@ -78,17 +88,15 @@ Solidity ist **die** Programmiersprache um Smart-Contracts für die Ethereum-Cha
 
 ### Svelte
 
-#### **Svelte**:
-Laut neuster [Statistiken von State of JS](https://2021.stateofjs.com/de-DE/libraries/front-end-frameworks) ist [Svelete](https://svelte.dev/) das Interessanteste Front-End-Framework. Zudem passt es gut zu diesem Projekt, da Statischer HTML-/JS-/CSS-Code generiert werden kann, welche schließlich über IPFS gehostet werden kann.
+Laut neuster [Statistiken von State of JS](https://2021.stateofjs.com/de-DE/libraries/front-end-frameworks) ist [**Svelete**](https://svelte.dev/) das Interessanteste Front-End-Framework. Zudem passt es gut zu diesem Projekt, da Statischer HTML-/JS-/CSS-Code generiert werden kann, welche schließlich über IPFS gehostet werden kann.
 
-#### **Svelte-Kit**:
-Das [Svelte-Kit](https://kit.svelte.dev/) wird genutzt, weil es die möglichkeit bietet mit `routes` eine Multi-Page-Website zu erstellen. Zudem ist es laut State of JS das Interessanteste Back-End-Frameworks 2021. In diesem Projekt wird es jedoch nur genutzt um eine statische Webseite zu builden.
+Das [**Svelte-Kit**](https://kit.svelte.dev/) wird genutzt, weil es die möglichkeit bietet mit `routes` eine Multi-Page-Website zu erstellen. Zudem ist es laut State of JS das Interessanteste Back-End-Frameworks 2021. In diesem Projekt wird es jedoch nur genutzt um eine statische Webseite zu builden.
 
-#### **IPFS**:
+### IPFS
+[**IPFS**](https://ipfs.io/) ist ein dezentrales System für die Speicherung von und den Zugriff auf Dateien, Websites, Anwendungen und Daten. In diesem Projekt wird es dazu verwendet Webseite und Bilder bereitzustellen. 
 
 ### Docker
-
-## Testing
+Mithilfe von [**Docker**](https://www.docker.com/) wird eine [Microservices-Architektur](https://de.wikipedia.org/wiki/Microservices) ermöglicht, um die ausführung von komplizierten Prozessen zu vereinfachen. Zudem wird die unabhängigkeit der einzelnen Prozesse gesteigert, was in einem sichereren System resultiert.
 
 ## Mögliche Hindernisse
 
