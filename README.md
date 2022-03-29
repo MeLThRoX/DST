@@ -54,7 +54,7 @@ Folgende Schritte müssen eingeleitet werden um den Shop zu installieren und aus
 ## Programm-Overview
 In folgender Darstellung ist das Verhältnis des Repos zu den Docker-Containern und dem deployted Code zu erkennen:
 
-![Ablaufdiagramm](./docs/structure.png)
+![Ablaufdiagramm](./docs/structure.PNG)
 
 Die nächste Abbildung zeigt den Ablauf eines Deployments. Die verschiedenen Technologien, die innerhalb des Projektes verwendet werden, interagieren wie folgt miteinander:
 
