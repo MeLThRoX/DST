@@ -30,7 +30,7 @@ Folgende Schritte müssen eingeleitet werden um den Shop zu installieren und aus
    $ cd DST
    ```
 
-3. Nun muss der Private Schlüssel des Ethereum Wallets innerhalb der `docker-compose.yml` festgelegt werdem. Dazu wird der [Private Schlüssel über Metamask exportiert](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key) und für die Variable `PRIVATE_KEY` gesetzt:
+3. Nun muss der private Schlüssel des Ethereum Wallets innerhalb der `docker-compose.yml` festgelegt werden. Dazu wird der [private Schlüssel über Metamask exportiert](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key) und für die Variable `PRIVATE_KEY` gesetzt:
    ```yml
    dst:
       build:
@@ -45,7 +45,7 @@ Folgende Schritte müssen eingeleitet werden um den Shop zu installieren und aus
       "categories": ["Cat1", "Cat2", "Cat3"]
    }
    ```
-5. Zuletzt müssen noch mittels `docker-compose` die benötigten Container gestrartet werden. Dazu wird folgender Befehl ausgeführt:
+5. Zuletzt müssen noch mittels `docker-compose` die benötigten Container gestartet werden. Dazu wird folgender Befehl ausgeführt:
    ```bash
    $ docker-compose up -d
    ```
@@ -56,7 +56,7 @@ In folgender Darstellung ist das Verhältnis des Repos zu den Docker-Containern 
 
 ![Ablaufdiagramm](./docs/structure.png)
 
-Die nächste Abbildung zeigt den Ablauf eines Deployments. Die verschiedenen Technologien, die innerhalb des Projektes verwendet werden, interagieren wie folgt:
+Die nächste Abbildung zeigt den Ablauf eines Deployments. Die verschiedenen Technologien, die innerhalb des Projektes verwendet werden, interagieren wie folgt miteinander:
 
 ![FlowChart](./docs/flow.png)
 
@@ -66,11 +66,9 @@ Die nächste Abbildung zeigt den Ablauf eines Deployments. Die verschiedenen Tec
 
 #### Verwendung
 
-**Solidity** wird verwendet, um einen Smart-Contract zu Erstellen. Dieser Contract bietet die Grundlage für jeden Shop, der von einem User erstellt wird. Er bietet die Funktionalität zum Verwalten des Shop-Inventars und der Bestellabwicklung. Die einzelnen Funktionen des Contracts werden über das Svelte-Frontend angesteuert.
+**Solidity** wird verwendet, um einen Smart-Contract zu erstellen. Dieser Contract bietet die Grundlage für jeden Shop, der von einem User erstellt wird. Er bietet die Funktionalität zum Verwalten des Shop-Inventars und der Bestellabwicklung. Die einzelnen Funktionen des Contracts werden über das Svelte-Frontend angesteuert.
 
-Der [Contract](backend/solidity) wird beim initialisieren des Shops automatisch vom Repo aus kompiliert und neu deployed. Dabei wird die Walletadresse des Admins innerhalb der verwendeten Chain hinterlegt. Diese wird für verschiedene Aufgaben benötigt. Auf der einen Seite wird das Aufrufen mancher Funktionen auf den Adminnutzer begrenzt. Der private Wallet-Key des Admins muss zuvor innerhalb einer .env Datei hinterlegt werden.
-
-Beim Deployen des Contracts wird die Wallet-Adresse des Admins innerhalb des Contracts hinterlegt. Anhand dieser wird der Zugriif auf manche Funktionen, wie beispielsweise das Hinterlegen neuer Produkte oder dem Anpassen des Inventars, beschränkt. 
+Der [Contract](backend/solidity) wird beim Initialisieren des Shops automatisch vom Repo aus kompiliert und neu deployed. Dabei wird die Walletadresse des Admins innerhalb der verwendeten Chain hinterlegt. Diese wird für verschiedene Aufgaben benötigt. Der private Wallet-Key des Admins muss zuvor innerhalb der docker-compose.yml Datei hinterlegt werden. Beim Deployen des Contracts wird die Wallet-Adresse des Admins dann innerhalb des Contracts hinterlegt. Anhand dieser wird der Zugriif auf manche Funktionen, wie beispielsweise das Hinterlegen neuer Produkte oder dem Anpassen des Inventars, beschränkt. 
 
 #### Warum Solidity?
 
@@ -79,12 +77,13 @@ Solidity ist **die** Programmiersprache um Smart-Contracts für die Ethereum-Cha
 ### Svelte
 
 #### **Svelte**:
-Laut neuster [Statistiken von State of JS](https://2021.stateofjs.com/de-DE/libraries/front-end-frameworks) ist [Svelete](https://svelte.dev/) das Interessanteste Front-End-Framework. Zudem passt es gut zu diesem Projekt, da Statischer HTML-/JS-/CSS-Code generiert werden kann, welche schließlich über IPFS gehostet werden kann.
+Laut neuster [Statistiken von State of JS](https://2021.stateofjs.com/de-DE/libraries/front-end-frameworks) ist [Svelete](https://svelte.dev/) das interessanteste Front-End-Framework. Zudem passt es gut zu diesem Projekt, da Statischer HTML-/JS-/CSS-Code generiert werden kann, welche schließlich über IPFS gehostet werden kann.
 
 #### **Svelte-Kit**:
-Das [Svelte-Kit](https://kit.svelte.dev/) wird genutzt, weil es die möglichkeit bietet mit `routes` eine Multi-Page-Website zu erstellen. Zudem ist es laut State of JS das Interessanteste Back-End-Frameworks 2021. In diesem Projekt wird es jedoch nur genutzt um eine statische Webseite zu builden.
+Das [Svelte-Kit](https://kit.svelte.dev/) wird genutzt, weil es die Möglichkeit bietet mit `routes` eine Multi-Page-Website zu erstellen. Zudem ist es laut State of JS das interessanteste Back-End-Frameworks 2021. In diesem Projekt wird es jedoch nur genutzt um eine statische Webseite zu builden.
 
 #### **IPFS**:
+Wie zuvor angesprochen, wird IPFS verwendet um die erzeugten Dateien für das Front-End dezentralisiert zu hosten. Dabei wird eine Datei, die auf IPFS hochgeladen wird, in kleinere Teile aufgeteilt, davon Hashwerte erzeugt und mit einer CID (content-identifiert) versehen. Über diese kann der Content dann von den einzelnen Nodes lokalisiert werden. Dadurch muss ein Nutzer, der die Seite erreichen will, ebenfalls IPFS in seinen Browser eingebunden haben. Der Brave-Browser bietet diese Funktionalität out-of-the-box.
 
 ### Docker
 
