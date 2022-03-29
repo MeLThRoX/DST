@@ -24,3 +24,12 @@ Hier gibts es lediglich die Funktion *buyCart*. Diese wird vom Frontend aus dann
 
 ### Getter-Functions
 Diese Funktionen dienen primär dem Frontend, um öffentliche Informationen über den Shop, wie die zur Verfügung stehende Produkte und vielem mehr, laden zu können. Der Zugriff auf diese Funktionen ist nicht über eine Zugangskontrolle beschränkt. Das heißt jeder kann auf die Informationen, wenn er die Adresse des Conracts kennt, zugreifen.
+
+## Testing
+
+### Unit-Tests
+Zum Testen des Contracts und seinen Funktionen wurde ein Plugin innerhalb des verwendeten Editors benutzt. Dabei wird dieses so verwendet wie in der [Doku](https://remix-ide.readthedocs.io/en/latest/unittesting.html) der Remix-IDE beschrieben. 
+
+Um das Plugin korrekt verwenden zu können, wird der Konstruktor des normalen Codes so angepasst, dass Parameter, die eigentlich aus der ausführenden Transaktion des Frontends gelesen würde, direkt in den Contract geschrieben werden können. Vor allem geht es dabei um die Adresse des Admin-Wallets. Durch das Anpassen des Konstruktors lassen sich noch weitere Facetten des Contracts testen.
+
+Die Tests werden nach allen signifikanten Änderungen per Hand durchgeführt. Eine Pipeline zum automatisieren dieser Aufgabe wurde bisher nicht eingerichtet.
