@@ -119,6 +119,29 @@ contract DST
             currentID += 1;
         }
     }
+    
+    
+    function withdraw(address _receiver, uint256 _amount) 
+    public
+    {
+        require(isAdmin() , "Only admin allowed to execute!");
+        require(usedToken.balanceOf(address(this)) >= _amount, "Not enought token in contract");
+        usedToken.transfer(_receiver, _amount);
+    }
+
+
+    function getAllOrders()
+    public
+    view
+    returns(Order[] memory)
+    {
+        require(isAdmin() , "Only admin allowed to execute!");
+        return orderList;
+    }
+
+    /* TODO
+    getSomeOfTheOrder - only get split of ordered items, maybe last 24 hours, or orders, that have not been checked for
+    */
 
 
 /*
@@ -190,27 +213,6 @@ contract DST
     }
     */
     
-    function withdraw(address _receiver, uint256 _amount) 
-    public
-    {
-        require(isAdmin() , "Only admin allowed to execute!");
-        require(usedToken.balanceOf(address(this)) >= _amount, "Not enought token in contract");
-        usedToken.transfer(_receiver, _amount);
-    }
-
-
-    function getAllOrders()
-    public
-    view
-    returns(Order[] memory)
-    {
-        require(isAdmin() , "Only admin allowed to execute!");
-        return orderList;
-    }
-
-    /* TODO
-    getSomeOfTheOrder - only get split of ordered items, maybe last 24 hours, or orders, that have not been checked for
-    */
 
 /*
 ----- Getter functions
