@@ -3,12 +3,49 @@ Sie wollten schon immer einen eigenen Shop betreiben doch haben keine Ahnung wie
 
 
 ## How to use it
-Tutorial, wie ein Nutzer den Shop selbst starten kann.
-Was muss im Voraus von Seiten des Nutzers erfüllt sein.
+### Abhängigkeiten
+
+Um den Source-Code zu kompilieren und das Projekt auszuführen wird [Docker](https://www.docker.com/get-started/) als einzige Abhängigkeit benötigt. Das System muss eine `amd64`-Architektur vorweisen.
+
+### Installation
+
+Folgende Schritte müssen eingeleitet werden um den Shop zu installieren und auszuführen:
+
+1. Zunächst wird das Repository geklont:
+   ```bash
+   $ git clone https://github.com/MeLThRoX/DST
+   ```
+
+2. Als nächstes wird in den neunen Ordner navigiert:
+   ```bash
+   $ cd DST
+   ```
+
+3. Nun muss der Private Schlüssel des Ethereum Wallets innerhalb der `docker-compose.yml` festgelegt werdem. Dazu wird der Private Schlüssel über Metamask exportiert und für die Variable `PRIVATE_KEY` gesetzt:
+   ```yml
+   dst:
+      build:
+         context: .
+         args:
+            - PRIVATE_KEY=<Privater Schlüssel>
+   ```
+4. Nun muss die Configurationsdatei `config.json` nach belieben angepasst werden:
+   ```json
+   {
+      "shop_name": "MyNewShop",
+      "categories": ["Cat1", "Cat2", "Cat3"]
+   }
+   ```
+5. Zuletzt müssen noch mittels `docker-compose` die benötigten Container gestrartet werden. Dazu wird folgender Befehl ausgeführt:
+   ```bash
+   $ docker-compose up -d
+   ```
 
 
 ## Programm-Overview
 Zeichnung mittels Visio oder ähnlichem einfügen
+
+![Ablaufdiagramm](./docs/structure.png)
 
 ## Verwendete Technologien
 
