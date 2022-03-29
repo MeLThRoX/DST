@@ -1,6 +1,15 @@
 # DST - Decentralized Shop Toolkit
-Sie wollten schon immer einen eigenen Shop betreiben doch haben keine Ahnung wie das geht? Dann sind Sie hier genau richtig. Das DST bietet die Möglichkeit einen voll funktionsfähigen Marketplace mit wenigen Klicks zu starten.
+![License](https://img.shields.io/github/license/MeLThRoX/DST)
+![Issues](https://img.shields.io/github/issues/MeLThRoX/DST)
 
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Ethereum](https://img.shields.io/badge/Ethereum-D1BEF7?style=for-the-badge&logo=ethereum&logoColor=black)
+![IPFS](https://img.shields.io/badge/IPFS-65C3CA?style=for-the-badge&logo=IPFS&logoColor=306D70)
+![Svelte](https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00)
+![Solidity](https://img.shields.io/badge/Solidity-002FA7?style=for-the-badge&logo=solidity&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+
+Sie wollten schon immer einen eigenen Shop betreiben doch haben keine Ahnung wie das geht? Dann sind Sie hier genau richtig. Das DST bietet die Möglichkeit einen voll funktionsfähigen Marketplace mit wenigen Klicks zu starten.
 
 ## How to use it
 ### Abhängigkeiten
@@ -21,7 +30,7 @@ Folgende Schritte müssen eingeleitet werden um den Shop zu installieren und aus
    $ cd DST
    ```
 
-3. Nun muss der Private Schlüssel des Ethereum Wallets innerhalb der `docker-compose.yml` festgelegt werdem. Dazu wird der Private Schlüssel über Metamask exportiert und für die Variable `PRIVATE_KEY` gesetzt:
+3. Nun muss der Private Schlüssel des Ethereum Wallets innerhalb der `docker-compose.yml` festgelegt werdem. Dazu wird der [Private Schlüssel über Metamask exportiert](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key) und für die Variable `PRIVATE_KEY` gesetzt:
    ```yml
    dst:
       build:
@@ -43,9 +52,13 @@ Folgende Schritte müssen eingeleitet werden um den Shop zu installieren und aus
 
 
 ## Programm-Overview
-Zeichnung mittels Visio oder ähnlichem einfügen
+In folgender Darstellung ist das Verhältnis des Repos zu den Docker-Containern und dem deployted Code zu erkennen:
 
-![Ablaufdiagramm](./docs/structure.PNG)
+![Ablaufdiagramm](./docs/structure.png)
+
+Die nächste Abbildung zeigt den Ablauf eines Deployments. Die verschiedenen Technologien, die innerhalb des Projektes verwendet werden, interagieren wie folgt:
+
+![FlowChart](./docs/flow.png)
 
 ## Verwendete Technologien
 
@@ -63,14 +76,19 @@ Beim Deployen des Contracts wird die Wallet-Adresse des Admins innerhalb des Con
 
 Solidity ist **die** Programmiersprache um Smart-Contracts für die Ethereum-Chain und dessen Forks oder Testnets zu erstellen. Da der DST dezentralisiert laufen soll und Kaufprozesse von Produkten ohne die Verwendung einer zentralen Entität abschließen soll, ist die Ethereum-Chain mit Solidity die perfekte grundlage die nötige Logik zu entwickeln.
 
-### Svelte 
-**Svelte**:
+### Svelte
 
-**IPFS**:
+#### **Svelte**:
+Laut neuster [Statistiken von State of JS](https://2021.stateofjs.com/de-DE/libraries/front-end-frameworks) ist [Svelete](https://svelte.dev/) das Interessanteste Front-End-Framework. Zudem passt es gut zu diesem Projekt, da Statischer HTML-/JS-/CSS-Code generiert werden kann, welche schließlich über IPFS gehostet werden kann.
 
-**Ethers**:
+#### **Svelte-Kit**:
+Das [Svelte-Kit](https://kit.svelte.dev/) wird genutzt, weil es die möglichkeit bietet mit `routes` eine Multi-Page-Website zu erstellen. Zudem ist es laut State of JS das Interessanteste Back-End-Frameworks 2021. In diesem Projekt wird es jedoch nur genutzt um eine statische Webseite zu builden.
+
+#### **IPFS**:
 
 ### Docker
+
+## Testing
 
 ## Mögliche Hindernisse
 
