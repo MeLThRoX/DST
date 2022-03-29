@@ -45,7 +45,7 @@ Folgende Schritte müssen eingeleitet werden um den Shop zu installieren und aus
 ## Programm-Overview
 Zeichnung mittels Visio oder ähnlichem einfügen
 
-![Ablaufdiagramm](./docs/structure.png)
+![Ablaufdiagramm](./docs/structure.PNG)
 
 ## Verwendete Technologien
 
