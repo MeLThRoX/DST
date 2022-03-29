@@ -42,3 +42,9 @@ Wie bei vielen Projekten, die sich mit Ethereum befassen, ist eins der größten
 
 #### Mögliche Lösung
 [**Arbitrum**](https://offchainlabs.com/) könnte eine Lösung für dieses Problem sein. Arbitrum verwendet Roll-Ups um dadurch die Gas-Fees und die Ausführungszeit von Transaktion zu reduzieren. Um diese Technologie auf DST zu übertragen, muss der Contract lediglich auf die Arbitrum-Chain deployed werden. Der Solidity-Code selbst muss dafür nicht angepasst werden.
+
+### IPFS
+Das Frontend eines DST-Shops wird unter anderem über IPFS erreichbar sein. In ersten Tests ist jedoch aufgefallen, dass IPFS teilweise sehr lange braucht, um die entsprechenden Komponenten zu laden und dann darzustellen. Das beeinflusst die Benutzerfreundlichkeit negativ. Bisher wurde noch keine konkrete Lösung zu dem Problem gefunden.
+
+#### Erster Workaround
+Um dem Admin eines DST-Shops die Möglichkeit zu geben, dass Problem zu umgehen, wird beim Initialisieren des Shops gleichzeitig eine Instanz auf IPFS und einem lokalen Port gestartet. Fall IPFS also zu langsam sein sollte, kann der Admin auf den lokal laufenden Server umsteigen. Dabei geht jedoch die Dezentralität des Shops teilweise verloren.
