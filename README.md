@@ -52,13 +52,14 @@ Folgende Schritte müssen eingeleitet werden um den Shop zu installieren und aus
    $ cd DST
    ```
 
-3. Nun muss der private Schlüssel des Ethereum Wallets innerhalb der `docker-compose.yml` festgelegt werden. Dazu wird der [private Schlüssel über Metamask exportiert](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key) und für die Variable `PRIVATE_KEY` gesetzt:
+3. Nun muss der private Schlüssel des Ethereum Wallets innerhalb der `docker-compose.yml` festgelegt werden. Dazu wird der [private Schlüssel über Metamask exportiert](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key) und für die Variable `PRIVATE_KEY` gesetzt. Zusätzlich sollte ein Provider angegeben werden:
    ```yml
    dst:
       build:
          context: .
          args:
             - PRIVATE_KEY=<Privater Schlüssel>
+            - PROVIDER=<PROVIDER>
    ```
 4. Nun muss die Configurationsdatei `config.json` nach belieben angepasst werden:
    ```json
